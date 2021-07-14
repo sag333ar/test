@@ -6,42 +6,24 @@ function App() {
   const [data, setData] = useState([]);
 
   const fetchData = () => {
-    fetch("https://api.github.com/search/users?q=sagar")
+    fetch("http://hn.algolia.com/api/v1/search?query=react")
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
-        setData(response.items)
-      });
+        setData(response.hits);
+      })
+      .catch((error) => console.error(error));
   };
 
   useEffect(() => {
     fetchData();
-  });
+  }, []);
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
       <main>
         <h3>Users</h3>
-        {data && data.map((user) => (
-          <div key={user.login}>
-            <img src={user.avatar_url} alt={user.login} />
-            <p>{user.login}</p>
-          </div>
-        ))}
+        {data && data.map((n, i) => <p key={i}>{n.title}</p>)}
       </main>
     </div>
   );
